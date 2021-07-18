@@ -8,7 +8,7 @@ CREATE TABLE users (
 
 CREATE TABLE parameters (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  owner_id VARCHAR(255) not null references users(user_id),
+  owner_id uuid not null references users(user_id),
   work INTEGER,
   leisure INTEGER,
   game INTEGER,
