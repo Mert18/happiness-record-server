@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const pool = require("../db");
+const client = require("../db");
 const validInfo = require("../middleware/validInfo");
 const jwtGenerator = require("../utils/jwtGenerator");
 const authorize = require("../middleware/authorize");
@@ -10,9 +10,9 @@ const authorize = require("../middleware/authorize");
 
 router.post("/register", validInfo, async (req, res) => {
   const { email, name, password } = req.body;
-
+  console.log("INSIDE THE REGISTER ROUUTE")
   try {
-    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
+    const user = await client.query("SELECT * FROM users WHERE user_email = $1", [
       email
     ]);
 
@@ -23,7 +23,7 @@ router.post("/register", validInfo, async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const bcryptPassword = await bcrypt.hash(password, salt);
 
-    let newUser = await pool.query(
+    let newUser = await client.query(
       "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
       [name, email, bcryptPassword]
     );
@@ -41,7 +41,7 @@ router.post("/login", validInfo, async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
+    const user = await client.query("SELECT * FROM users WHERE user_email = $1", [
       email
     ]);
 

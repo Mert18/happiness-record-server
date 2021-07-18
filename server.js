@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const dotenv = require('dotenv');
-dotenv.config();
 
 //middleware
 
@@ -16,7 +14,8 @@ app.use("/authentication", require("./routes/jwtAuth"));
 app.use("/dashboard", require("./routes/dashboard"));
 
 app.use("/data", require("./routes/data"));
+const port = process.env.PORT || 5000
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is starting on port 5000`);
+app.listen(port, () => {
+  console.log(`Server is starting on port ${port}`);
 });
