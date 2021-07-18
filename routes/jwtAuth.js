@@ -10,7 +10,6 @@ const authorize = require("../middleware/authorize");
 
 router.post("/register", validInfo, async (req, res) => {
   const { email, name, password } = req.body;
-  console.log("INSIDE THE REGISTER ROUUTE")
   try {
     const user = await client.query("SELECT * FROM users WHERE user_email = $1", [
       email
