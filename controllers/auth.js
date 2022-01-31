@@ -32,7 +32,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 } */
 
 exports.signup = (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
   User.findOne({ email }).exec((err, user) => {
     if (user) {
       return res.status(400).json({
@@ -41,7 +41,7 @@ exports.signup = (req, res) => {
     }
 
     const token = jwt.sign(
-      { name, email, password },
+      { username, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       { expiresIn: "4h" }
     );
@@ -91,8 +91,8 @@ exports.accountActivation = (req, res) => {
           });
         }
 
-        const { name, email, password } = jwt.decode(token);
-        const user = new User({ name, email, password });
+        const { username, email, password } = jwt.decode(token);
+        const user = new User({ username, email, password });
         user.save((err, user) => {
           if (err) {
             console.log("Save user in account activation error", err);
@@ -129,10 +129,10 @@ exports.signin = (req, res) => {
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-    const { _id, name, email, role } = user;
+    const { _id, username, email, role } = user;
     return res.json({
       token,
-      user: { _id, name, email, role },
+      user: { _id, username, email, role },
     });
   });
 };
@@ -170,7 +170,7 @@ exports.forgotPassword = (req, res) => {
     }
 
     const token = jwt.sign(
-      { _id: user._id, name: user.name },
+      { _id: user._id, username: user.username },
       process.env.JWT_RESET_PASSWORD,
       { expiresIn: "10m" }
     );
