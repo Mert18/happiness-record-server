@@ -32,7 +32,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 } */
 
 exports.signup = (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
   User.findOne({ email }).exec((err, user) => {
     if (user) {
       return res.status(400).json({
@@ -41,7 +41,7 @@ exports.signup = (req, res) => {
     }
 
     const token = jwt.sign(
-      { username, email, password },
+      { name, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       { expiresIn: "4h" }
     );
