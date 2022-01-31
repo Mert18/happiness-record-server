@@ -52,7 +52,7 @@ exports.signup = (req, res) => {
       subject: `Account activation link`,
       html: `
                 <h1>Please use the following link to activate your account</h1>
-                <p>${process.env.CLIENT_URL}/auth/activate/${token}</p>
+                <p>${process.env.CLIENT_URL}/accountactivation/${token}</p>
                 <hr />
                 <p>This email may contain sensetive information</p>
                 <p>${process.env.CLIENT_URL}</p>
