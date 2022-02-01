@@ -3,33 +3,8 @@ const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const _ = require("lodash");
 
-//sendgrid
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-/* exports.signup = (req, res) => {
-    console.log(req.body)
-    const { name, email, password } = req.body;
-    User.findOne({ email }).exec((err, user) => {
-        if (user) {
-            return res.status(400).json({
-                error: 'Email is taken.'
-            })
-        }
-        let newUser = new User({ name, email, password });
-        newUser.save((err, success) => {
-            if (err) {
-                console.log("Signup Error", err)
-                return res.status(400).json({
-                    error: err
-                })
-            }
-            res.json({
-                message: 'Signup success! Please sign in.'
-            })
-        })
-    });
-} */
 
 exports.signup = (req, res) => {
   const { username, email, password } = req.body;
@@ -86,6 +61,7 @@ exports.accountActivation = (req, res) => {
       function (err, decoded) {
         if (err) {
           console.log("JWT Verify in account activation err", err);
+          console.log(decoded);
           return res.status(401).json({
             error: "Expired link. Sign up again.",
           });
