@@ -1,4 +1,5 @@
 const Data = require("../models/data");
+const User = require("../models/user");
 
 exports.getMyData = async (req, res) => {
   try {
@@ -34,5 +35,19 @@ exports.postMyData = async (req, res) => {
     });
   } catch (error) {
     console.log("error creating your data document", error);
+  }
+};
+
+exports.getRandomUserData = async (req, res) => {
+  try {
+    const user = await User.aggregate([{ $sample: { size: 1 } }]);
+    console.log(user[0]);
+    console.log(user[0]._id);
+
+    const data = await Data.find({ owner_id: user[0]._id });
+    const returnedData = [user[0].username, data];
+    console.log(returnedData);
+  } catch (error) {
+    console.log("Get random user data error", error);
   }
 };
