@@ -41,12 +41,9 @@ exports.postMyData = async (req, res) => {
 exports.getRandomUserData = async (req, res) => {
   try {
     const user = await User.aggregate([{ $sample: { size: 1 } }]);
-    console.log(user[0]);
-    console.log(user[0]._id);
-
     const data = await Data.find({ owner_id: user[0]._id });
     const returnedData = [user[0].username, data];
-    console.log(returnedData);
+    res.json(returnedData);
   } catch (error) {
     console.log("Get random user data error", error);
   }
