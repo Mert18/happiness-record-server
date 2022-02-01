@@ -48,3 +48,21 @@ exports.getRandomUserData = async (req, res) => {
     console.log("Get random user data error", error);
   }
 };
+
+exports.getRandomUser = async (req, res) => {
+  try {
+    const user = await User.aggregate([{ $sample: { size: 1 } }]);
+    res.json(user);
+  } catch (error) {
+    console.log("error getting random user", error);
+  }
+};
+
+exports.getUserData = async (req, res) => {
+  try {
+    const data = await Data.find({ owner_id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log("error getting users data", err);
+  }
+};
