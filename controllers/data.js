@@ -66,3 +66,13 @@ exports.getUserData = async (req, res) => {
     console.log("error getting users data", err);
   }
 };
+
+exports.getMyProfile = async (req, res) => {
+  try {
+    console.log(req.user);
+    const user = await User.find({ _id: req.user });
+    await res.json(user);
+  } catch (err) {
+    console.log("error getting profile.", err);
+  }
+};
